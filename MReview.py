@@ -5,9 +5,9 @@ file = 'Clinical Questions.csv'
 
 def importDataFrame(file):
     if file.split('.')[1] == 'csv':
-        return pd.read_csv(file)
+        return pd.read_csv(file,parse_dates=['Date'])
     else:
-        return pd.ExcelFile(file).parse(0)
+        return pd.ExcelFile(file).parse(0,parse_dates=['Date'])
 
 
 def sliceQuestions(frame, Exclude = [], Specialty= 'All', Diagnosis = 'All',
