@@ -37,8 +37,8 @@ def descriptiveStatistics(frame):
         print ("    ",x,": ",frame.Specialty.value_counts().loc[x], 
                " ({} Emergency".format(len(frame[(frame.Specialty==x)&(frame.Emergency=='Yes')])),
                " and {} Pharmacology)".format(len(frame[(frame.Specialty==x)&(frame.Pharmacology=='Yes')])), sep='')
-    print('\nThe questions were collected over {} days since {}.'.format((frame.Date.iloc[-1]-frame.Date.iloc[0]).days+1,
-                                frame.Date.iloc[-1].strftime('%Y-%m-%d')))
+    print('\nThe questions were collected over {} days between {} and {}.'.format((frame.Date.iloc[-1]-frame.Date.iloc[0]).days+1,
+                                frame.Date.iloc[0].strftime('%Y-%m-%d'),frame.Date.iloc[-1].strftime('%Y-%m-%d')))
 
 
 
