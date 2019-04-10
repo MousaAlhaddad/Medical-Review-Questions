@@ -40,6 +40,11 @@ def descriptiveStatistics(frame):
     print('\nThe questions were collected over {} days between {} and {}.'.format((frame.Date.iloc[-1]-frame.Date.iloc[0]).days+1,
                                 frame.Date.iloc[0].strftime('%Y-%m-%d'),frame.Date.iloc[-1].strftime('%Y-%m-%d')))
 
-
+def newQuestion(df,solved):
+    questionsIndex=df.index
+    r = np.random.randint(len(questionsIndex))
+    r = questionsIndex[r]
+    solved.append(r)
+    return (df.Question.loc[r],df.Answer.loc[r],df.drop(r),solved)
 
 
