@@ -48,6 +48,15 @@ def newQuestion(df,solved):
     solved.append(r)
     return (df.Question.loc[r],df.Answer.loc[r],df.drop(r),solved)
 
+def text(df):
+    Text="Questions:\n"
+    for x in df.index:
+        Text += str(x) + ". " + df.Question.loc[x] + "\n"
+
+    Text += "\nAnswers:"
+    for x in df.index:
+        Text += "\n" + str(x) + "\n" + df.Answer.loc[x]+'\n'
+    return Text
 
 # Initialization
 df = importDataFrame(file)
@@ -63,3 +72,5 @@ random += sorted(list(np.random.choice(Oncology,2,replace=False)))
 random += sorted(list(np.random.choice(Medicine,5,replace=False)))
 Solved += random
 newQuestions = df.loc[random,['Question','Answer']]
+
+Text=text(newQuestions)
