@@ -41,11 +41,29 @@ def descriptiveStatistics(frame):
     print('\nThe questions were collected over {} days between {} and {}.'.format((frame.Date.iloc[-1]-frame.Date.iloc[0]).days+1,
                                 frame.Date.iloc[0].strftime('%Y-%m-%d'),frame.Date.iloc[-1].strftime('%Y-%m-%d')))
 
-def newQuestion(df,solved):
-    questionsIndex=df.index
-    r = np.random.randint(len(questionsIndex))
-    r = questionsIndex[r]
-    solved.append(r)
-    return (df.Question.loc[r],df.Answer.loc[r],df.drop(r),solved)
+def text(df):
+    Text="Questions:\n"
+    for x in df.index:
+        Text += str(x) + ". " + df.Question.loc[x] + "\n"
 
+    Text += "\nAnswers:"
+    for x in df.index:
+        Text += "\n" + str(x) + "\n" + df.Answer.loc[x]+'\n'
+    return Text
 
+# Initialization
+df = importDataFrame(file)
+Solved=[]
+Emergency = sliceQuestions(df, Emergency = True)
+
+# Running this part will get you a new set of questions containing 3 Emergency, 2 Oncology and 5 Medicine questions each time
+Oncology = sliceQuestions(df, Specialty= 'Oncology,Hematology,Stem Cells,Pathology', Emergency=False, Exclude=Solved)
+Medicine = sliceQuestions(df, Specialty= 'Cardiology,Pulmonology,Intensive Care,Gastroenterology,Nephrology,Endocrinology,' + 
+                           'Infectious Diseases,Immunology,Rheumatology,Family Medicine', Emergency=False,Exclude=Solved)
+random = sorted(list(np.random.choice(Emergency,3,replace=False)))
+random += sorted(list(np.random.choice(Oncology,2,replace=False)))
+random += sorted(list(np.random.choice(Medicine,5,replace=False)))
+Solved += random
+newQuestions = df.loc[random,['Question','Answer']]
+
+Text=text(newQuestions)
