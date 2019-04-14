@@ -49,3 +49,17 @@ def newQuestion(df,solved):
     return (df.Question.loc[r],df.Answer.loc[r],df.drop(r),solved)
 
 
+# Initialization
+df = importDataFrame(file)
+Solved=[]
+Emergency = sliceQuestions(df, Emergency = True)
+
+# Running this part will get you a new set of questions containing 3 Emergency, 2 Oncology and 5 Medicine questions each time
+Oncology = sliceQuestions(df, Specialty= 'Oncology,Hematology,Stem Cells,Pathology', Emergency=False, Exclude=Solved)
+Medicine = sliceQuestions(df, Specialty= 'Cardiology,Pulmonology,Intensive Care,Gastroenterology,Nephrology,Endocrinology,' + 
+                           'Infectious Diseases,Immunology,Rheumatology,Family Medicine', Emergency=False,Exclude=Solved)
+random = sorted(list(np.random.choice(Emergency,3,replace=False)))
+random += sorted(list(np.random.choice(Oncology,2,replace=False)))
+random += sorted(list(np.random.choice(Medicine,5,replace=False)))
+Solved += random
+newQuestions = df.loc[random,['Question','Answer']]
