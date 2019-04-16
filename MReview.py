@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 
 file = 'Clinical Questions.csv'
 
@@ -57,6 +58,9 @@ Solved=[]
 Emergency = sliceQuestions(df, Emergency = True)
 
 # Running this part will get you a new set of questions containing 3 Emergency, 2 Oncology and 5 Medicine questions each time
+if 'Solved.txt' in os.listdir(): 
+    with open('Solved.txt','r') as Input:
+        Solved = [int(x) for x in Input.read().split('\n')[:-1]]
 Oncology = sliceQuestions(df, Specialty= 'Oncology,Hematology,Stem Cells,Pathology', Emergency=False, Exclude=Solved)
 Medicine = sliceQuestions(df, Specialty= 'Cardiology,Pulmonology,Intensive Care,Gastroenterology,Nephrology,Endocrinology,' + 
                            'Infectious Diseases,Immunology,Rheumatology,Family Medicine', Emergency=False,Exclude=Solved)
@@ -64,6 +68,7 @@ random = sorted(list(np.random.choice(Emergency,3,replace=False)))
 random += sorted(list(np.random.choice(Oncology,2,replace=False)))
 random += sorted(list(np.random.choice(Medicine,5,replace=False)))
 Solved += random
+with open('Solved.txt','w') as Output: 
+    for x in Solved: Output.write(str(x)+'\n')
 newQuestions = df.loc[random,['Question','Answer']]
-
 Text=text(newQuestions)
