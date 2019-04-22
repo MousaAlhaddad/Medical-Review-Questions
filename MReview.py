@@ -1,15 +1,13 @@
-import pandas as pd
 import numpy as np
-import os
-
-file = 'Clinical Questions.csv'
+import pandas as pd
+import os 
 
 def importDataFrame(file):
     if file.split('.')[1] == 'csv':
         return pd.read_csv(file,parse_dates=['Date'])
     else:
         return pd.ExcelFile(file).parse(0,parse_dates=['Date'])
-
+    
 def sliceQuestions(frame, Exclude = [], Specialty= 'All', Diagnosis = 'All',
                     Emergency = 'All', Pharmacology = 'All'):
     # Date = 'All' 
@@ -30,7 +28,7 @@ def sliceQuestions(frame, Exclude = [], Specialty= 'All', Diagnosis = 'All',
     
     questions = [x for x in list(frame.index) if x not in Exclude]    
     return (questions)
-     
+
 def descriptiveStatistics(frame):
     print('Our database has {} questions.'.format(len(frame)))
     print('The questions cover {} different specialties.'.format(len(frame.Specialty.value_counts())),end='\n\n')
@@ -50,12 +48,15 @@ def text(df):
     Text += "\nAnswers:"
     for x in df.index:
         Text += "\n" + str(x) + "\n" + df.Answer.loc[x]+'\n'
-    return Text
+    return Text 
+
 
 # Initialization
+file = 'Clinical Questions.csv' 
 df = importDataFrame(file)
 Solved=[]
 Emergency = sliceQuestions(df, Emergency = True)
+
 
 # Running this part will get you a new set of questions containing 3 Emergency, 2 Oncology and 5 Medicine questions each time
 if 'Solved.txt' in os.listdir(): 
@@ -64,27 +65,38 @@ if 'Solved.txt' in os.listdir():
 Oncology = sliceQuestions(df, Specialty= 'Oncology,Hematology,Stem Cells,Pathology', Emergency=False, Exclude=Solved)
 Medicine = sliceQuestions(df, Specialty= 'Cardiology,Pulmonology,Intensive Care,Gastroenterology,Nephrology,Endocrinology,' + 
                            'Infectious Diseases,Immunology,Rheumatology,Family Medicine', Emergency=False,Exclude=Solved)
-random = sorted(list(np.random.choice(Emergency,3,replace=False)))
-random += sorted(list(np.random.choice(Oncology,2,replace=False)))
-random += sorted(list(np.random.choice(Medicine,5,replace=False)))
+
+if 'Important.txt' in os.listdir():
+    with open('Important.txt','r') as Input:
+        Important = [int(x) for x in Input.read().split('\n')[:-1]]
+    random = sorted(list(np.random.choice(Important,1,replace=False)))
+    random += sorted(list(np.random.choice(Emergency,3,replace=False)))
+else: 
+    random = sorted(list(np.random.choice(Emergency,4,replace=False)))
+    
+random += sorted(list(np.random.choice(Oncology,3,replace=False)))
+random += sorted(list(np.random.choice(Medicine,8,replace=False)))
 Solved += random
 with open('Solved.txt','w') as Output: 
-    for x in Solved: Output.write(str(x)+'\n')
+    for x in sorted(list(set(Solved))): Output.write(str(x)+'\n')
 newQuestions = df.loc[random,['Question','Answer']]
-Text=text(newQuestions)
+emailText=text(newQuestions)
 
+print(emailText)
+
+
+# Sending the questions via Gmail 
 from datetime import date 
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-me = "<Your Email>@gmail.com"
-you = "<Sent to this email>@gmail.com"
+
 msg = MIMEMultipart()
 msg['Subject'] = "MReview {}".format(date.today())
-msg['From'] = me
-msg['To'] = you
-msg.attach(MIMEText(Text))
+msg['From'] = From
+msg['To'] = To
+msg.attach(MIMEText(emailText))
 mail = smtplib.SMTP('smtp.gmail.com', 587)
 mail.starttls()
-mail.login(me,'<Your Password>')
-mail.sendmail(me, you, msg.as_string())
+mail.login(From,Password)
+mail.sendmail(From, To, msg.as_string());
