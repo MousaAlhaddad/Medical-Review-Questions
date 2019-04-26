@@ -1,3 +1,7 @@
+# From = "Your_Email@gmail.com"
+# To = "Target_Email@gmail.com" 
+# Password = "Your_Password"
+
 import numpy as np
 import pandas as pd
 import os 
