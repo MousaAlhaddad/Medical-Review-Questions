@@ -77,15 +77,13 @@ else:
 random += sorted(list(np.random.choice(Oncology,3,replace=False)))
 random += sorted(list(np.random.choice(Medicine,8,replace=False)))
 Solved += random
-with open('Solved.txt','w') as Output: 
-    for x in sorted(list(set(Solved))): Output.write(str(x)+'\n')
+
 newQuestions = df.loc[random,['Question','Answer']]
 emailText=text(newQuestions)
 
 print(emailText)
 
-
-# Sending the questions via Gmail 
+# Sending the questions via Gmail
 from datetime import date 
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -100,3 +98,6 @@ mail = smtplib.SMTP('smtp.gmail.com', 587)
 mail.starttls()
 mail.login(From,Password)
 mail.sendmail(From, To, msg.as_string());
+
+with open('Solved.txt','w') as Output: 
+    for x in sorted(list(set(Solved))): Output.write(str(x)+'\n')
