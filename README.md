@@ -25,3 +25,6 @@ Here are the numbers of questions of the top ten specialties:
    * Rheumatology: 40 (0 Emergency and 7 Pharmacology)
 
 The questions were collected over 357 days between 2018-02-13 and 2019-02-04.
+
+# License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
