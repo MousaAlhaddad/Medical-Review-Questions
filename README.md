@@ -26,5 +26,8 @@ Here are the numbers of questions of the top ten specialties:
 
 The questions were collected over 357 days between 2018-02-13 and 2019-02-04.
 
-# License
+## Contributing to the Repository
+All contributions, bug reports, bug fixes, documentation improvements, enhancements and ideas are welcome.
+
+## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
