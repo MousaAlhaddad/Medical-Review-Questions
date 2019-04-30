@@ -26,6 +26,10 @@ Here are the numbers of questions of the top ten specialties:
 
 The questions were collected over 357 days between 2018-02-13 and 2019-02-04.
 
+## Dependencies
+* [NumPy](https://www.numpy.org/)
+* [Pandas](https://pandas.pydata.org/)
+
 ## Contributing to the Repository
 All contributions, bug reports, bug fixes, documentation improvements, enhancements and ideas are welcome.
 
